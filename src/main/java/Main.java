@@ -9,12 +9,19 @@
  */
 
 
+
+
+// Main class - entry point for QuickChat application
+// Commit 3: Add Main class with user interface
+// Commit 5: Add comments to Main class
+
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
+        // Scanner lets us read what the user types
         Scanner input = new Scanner(System.in);
 
         System.out.println("=== Welcome to QuickChat ===");
@@ -67,27 +74,31 @@ public class Main {
             System.out.println("Cell phone number incorrectly formatted or does not contain international code.");
         }
 
-        // --- Try to register ---
+        // --- Try to register the user ---
         String registrationResult = newUser.registerUser();
         System.out.println(registrationResult);
 
-        // --- Only allow login if registration was successful ---
+        // --- Login section - only runs if registration was successful ---
         if (registrationResult.equals("User registered successfully.")) {
 
             System.out.println();
             System.out.println("=== Please Log In ===");
 
+            // Ask user to enter login details
             System.out.print("Enter your username: ");
             String enteredUsername = input.nextLine();
 
             System.out.print("Enter your password: ");
             String enteredPassword = input.nextLine();
 
+            // Check if login details are correct
             boolean loginSuccess = newUser.loginUser(enteredUsername, enteredPassword);
+
+            // Show login result message
             String loginMessage = newUser.returnLoginStatus(loginSuccess);
             System.out.println(loginMessage);
         }
 
-        input.close();
+        input.close(); // always close scanner when done
     }
 }

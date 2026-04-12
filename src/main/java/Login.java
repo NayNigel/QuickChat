@@ -9,6 +9,13 @@
  */
  // this just says which project this file belongs to
 
+
+
+// Login class - handles registration and login for QuickChat
+// Commit 1: Initial commit - Project setup
+// Commit 2: Add Login class with registration methods
+// Commit 4: Add comments to Login methods
+
 import java.util.Scanner;
 
 public class Login {
@@ -31,6 +38,7 @@ public class Login {
 
     // -------------------------------------------------------
     // METHOD 1: Check if the username is valid
+    // Validates username format
     // Rules: must contain an underscore AND be 5 characters or less
     // -------------------------------------------------------
     public boolean checkUserName() {
@@ -43,6 +51,7 @@ public class Login {
 
     // -------------------------------------------------------
     // METHOD 2: Check if the password is strong enough
+    // Validates password complexity
     // Rules: 8+ characters, capital letter, number, special character
     // -------------------------------------------------------
     public boolean checkPasswordComplexity() {
@@ -74,6 +83,7 @@ public class Login {
 
     // -------------------------------------------------------
     // METHOD 3: Check if the cell phone number is valid
+    // Validates cell phone format
     // Rules: starts with + followed by 10 or 11 digits
     // Reference: Adapted from https://www.w3schools.com/java/java_regex.asp
     // -------------------------------------------------------
@@ -87,6 +97,7 @@ public class Login {
 
     // -------------------------------------------------------
     // METHOD 4: Register the user and return a message
+    // Returns appropriate message based on validation results
     // -------------------------------------------------------
     public String registerUser() {
         if (!checkUserName()) {
@@ -103,6 +114,7 @@ public class Login {
 
     // -------------------------------------------------------
     // METHOD 5: Check if login details match what was registered
+    // Verifies username and password match stored details
     // -------------------------------------------------------
     public boolean loginUser(String enteredUsername, String enteredPassword) {
         if (username.equals(enteredUsername) && password.equals(enteredPassword)) {
@@ -114,6 +126,7 @@ public class Login {
 
     // -------------------------------------------------------
     // METHOD 6: Return a login message based on success or failure
+    // Returns welcome message or error message
     // -------------------------------------------------------
     public String returnLoginStatus(boolean loginSuccess) {
         if (loginSuccess) {

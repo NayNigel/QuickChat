@@ -3,20 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
  */
 
+
+
+// LoginTest class - unit tests for Login class
+// Commit 6: Add unit tests for Login class
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginTest {
-
-    // We create one Login object that all tests will use
-    // This matches the test data from the rubric
-    Login testUser = new Login(
-        "John",           // first name
-        "Doe",            // last name
-        "kyl_1",          // username - from rubric test data
-        "Ch&&sec@ke99!",  // password - from rubric test data
-        "+27838968976"    // cell phone - from rubric test data
-    );
 
     // -------------------------------------------------------
     // TEST 1: Username is correctly formatted
@@ -98,7 +93,6 @@ public class LoginTest {
 
     // -------------------------------------------------------
     // TEST 9: Username correctly formatted returns correct message
-    // Test data from rubric: "kyl_1" 
     // -------------------------------------------------------
     @Test
     public void testUsernameCorrectMessage() {
@@ -108,7 +102,6 @@ public class LoginTest {
 
     // -------------------------------------------------------
     // TEST 10: Username incorrectly formatted returns correct message
-    // Test data from rubric: "kyle!!!!!!!"
     // -------------------------------------------------------
     @Test
     public void testUsernameIncorrectMessage() {
@@ -118,7 +111,6 @@ public class LoginTest {
 
     // -------------------------------------------------------
     // TEST 11: Password meets requirements - correct message
-    // Test data from rubric: "Ch&&sec@ke99!"
     // -------------------------------------------------------
     @Test
     public void testPasswordCorrectMessage() {
@@ -128,7 +120,6 @@ public class LoginTest {
 
     // -------------------------------------------------------
     // TEST 12: Password does not meet requirements - correct message
-    // Test data from rubric: "password"
     // -------------------------------------------------------
     @Test
     public void testPasswordIncorrectMessage() {
@@ -138,7 +129,6 @@ public class LoginTest {
 
     // -------------------------------------------------------
     // TEST 13: Cell number correctly formatted - correct message
-    // Test data from rubric: "+27838968976"
     // -------------------------------------------------------
     @Test
     public void testCellCorrectMessage() {
@@ -148,7 +138,6 @@ public class LoginTest {
 
     // -------------------------------------------------------
     // TEST 14: Cell number incorrectly formatted - correct message
-    // Test data from rubric: "08966553"
     // -------------------------------------------------------
     @Test
     public void testCellIncorrectMessage() {
