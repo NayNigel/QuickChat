@@ -87,7 +87,7 @@ public class Login {
     // Rules: starts with + followed by 10 or 11 digits
     // Reference: W3Schools. 2024. Java Regular Expressions. [Online].
     // Available: https://www.w3schools.com/java/java_regex.asp
-    // [Accessed 13 April 2026]
+    // [Accessed 10 April 2026]
     // -------------------------------------------------------
     public boolean checkCellPhoneNumber() {
         if (cellPhone.matches("\\+\\d{10,11}")) {
