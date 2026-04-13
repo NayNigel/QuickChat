@@ -10,10 +10,8 @@
 
 
 
-
 // Main class - entry point for QuickChat application
-// Commit 3: Add Main class with user interface
-// Commit 5: Add comments to Main class
+// Updated for Part 2 - Added messaging features
 
 import java.util.Scanner;
 
@@ -40,7 +38,7 @@ public class Main {
         String username = input.nextLine();
 
         // --- Get password ---
-        System.out.print("Enter a password (8+ characters, capital, number, special character): ");
+        System.out.print("Enter a password (8+ chars, capital, number, special character): ");
         String password = input.nextLine();
 
         // --- Get cell phone number ---
@@ -84,7 +82,6 @@ public class Main {
             System.out.println();
             System.out.println("=== Please Log In ===");
 
-            // Ask user to enter login details
             System.out.print("Enter your username: ");
             String enteredUsername = input.nextLine();
 
@@ -93,12 +90,106 @@ public class Main {
 
             // Check if login details are correct
             boolean loginSuccess = newUser.loginUser(enteredUsername, enteredPassword);
-
-            // Show login result message
             String loginMessage = newUser.returnLoginStatus(loginSuccess);
             System.out.println(loginMessage);
+
+            // --- Only show menu if login was successful ---
+            if (loginSuccess) {
+
+                // Ask how many messages the user wants to send
+                System.out.println();
+                System.out.print("How many messages do you want to send? ");
+                int numMessages = Integer.parseInt(input.nextLine());
+
+                // This variable keeps track of total messages sent
+                int totalMessagesSent = 0;
+
+                // This is the main menu loop
+                // It keeps running until the user chooses to quit
+                boolean running = true;
+
+                while (running) {
+
+                    // Show the menu
+                    System.out.println();
+                    System.out.println("=== Welcome to QuickChat ===");
+                    System.out.println("1) Send Messages");
+                    System.out.println("2) Show recently sent messages");
+                    System.out.println("3) Quit");
+                    System.out.print("Choose an option: ");
+
+                    int menuChoice = Integer.parseInt(input.nextLine());
+
+                    // Handle menu choice
+                    if (menuChoice == 1) {
+
+                        // --- SEND MESSAGES ---
+                        // This for loop runs for the number of messages the user chose
+                        for (int i = 0; i < numMessages; i++) {
+
+                            System.out.println();
+                            System.out.println("--- Message " + (i + 1) + " of " + numMessages + " ---");
+
+                            // Get recipient number
+                            System.out.print("Enter recipient cell number (e.g. +27831234567): ");
+                            String recipient = input.nextLine();
+
+                            // Get message text
+                            System.out.print("Enter your message: ");
+                            String messageText = input.nextLine();
+
+                            // Create a new Message object
+                            Message msg = new Message(i + 1, recipient, messageText);
+
+                            // Check recipient number and show result
+                            System.out.println(msg.checkRecipientCell());
+
+                            // Check message length and show result
+                            String lengthCheck = msg.checkMessageLength();
+                            System.out.println(lengthCheck);
+
+                            // Always show message options regardless of validation
+                            System.out.println();
+                            System.out.println("What would you like to do?");
+                            System.out.println("1) Send Message");
+                            System.out.println("2) Disregard Message");
+                            System.out.println("3) Store Message");
+                            System.out.print("Choose an option: ");
+
+                            int sendChoice = Integer.parseInt(input.nextLine());
+
+                            // Handle the choice
+                            String result = msg.sentMessage(sendChoice);
+                            System.out.println(result);
+
+                            // If message was sent, show details and increment counter
+                            if (sendChoice == 1) {
+                                totalMessagesSent++;
+                                System.out.println(msg.printMessages());
+                            }
+                        }
+
+                        // Show total messages sent
+                        System.out.println();
+                        System.out.println("Total messages sent: " + totalMessagesSent);
+
+                    } else if (menuChoice == 2) {
+                        // --- SHOW RECENTLY SENT MESSAGES ---
+                        System.out.println("Coming Soon.");
+
+                    } else if (menuChoice == 3) {
+                        // --- QUIT ---
+                        System.out.println("Goodbye! Thank you for using QuickChat.");
+                        running = false;
+
+                    } else {
+                        // Invalid menu option
+                        System.out.println("Invalid option. Please choose 1, 2 or 3.");
+                    }
+                }
+            }
         }
 
-        input.close(); // always close scanner when done
+        input.close();
     }
 }
