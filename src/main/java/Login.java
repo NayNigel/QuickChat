@@ -10,7 +10,7 @@
  // this just says which project this file belongs to
 
 
-
+// Updated - Added getters for all private variables
 // Login class - handles registration and login for QuickChat
 // Commit 1: Initial commit - Project setup
 // Commit 2: Add Login class with registration methods
