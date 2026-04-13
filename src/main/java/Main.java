@@ -11,7 +11,7 @@
 
 
 // Main class - entry point for QuickChat application
-// Updated for Part 2 - Added messaging features
+// Updated for Part 3 - Added arrays and report features
 
 import java.util.Scanner;
 
@@ -116,15 +116,14 @@ public class Main {
                     System.out.println("1) Send Messages");
                     System.out.println("2) Show recently sent messages");
                     System.out.println("3) Quit");
+                    System.out.println("4) Stored Messages");
                     System.out.print("Choose an option: ");
 
                     int menuChoice = Integer.parseInt(input.nextLine());
 
-                    // Handle menu choice
                     if (menuChoice == 1) {
 
                         // --- SEND MESSAGES ---
-                        // This for loop runs for the number of messages the user chose
                         for (int i = 0; i < numMessages; i++) {
 
                             System.out.println();
@@ -148,7 +147,7 @@ public class Main {
                             String lengthCheck = msg.checkMessageLength();
                             System.out.println(lengthCheck);
 
-                            // Always show message options regardless of validation
+                            // Always show message options
                             System.out.println();
                             System.out.println("What would you like to do?");
                             System.out.println("1) Send Message");
@@ -162,7 +161,7 @@ public class Main {
                             String result = msg.sentMessage(sendChoice);
                             System.out.println(result);
 
-                            // If message was sent, show details and increment counter
+                            // If message was sent show details and increment counter
                             if (sendChoice == 1) {
                                 totalMessagesSent++;
                                 System.out.println(msg.printMessages());
@@ -182,9 +181,84 @@ public class Main {
                         System.out.println("Goodbye! Thank you for using QuickChat.");
                         running = false;
 
+                    } else if (menuChoice == 4) {
+                        // --- STORED MESSAGES MENU ---
+                        boolean storedRunning = true;
+
+                        while (storedRunning) {
+                            System.out.println();
+                            System.out.println("=== Stored Messages Menu ===");
+                            System.out.println("1) Display all sender and recipient details");
+                            System.out.println("2) Display longest message");
+                            System.out.println("3) Search for message by ID");
+                            System.out.println("4) Search messages by recipient");
+                            System.out.println("5) Delete a message using hash");
+                            System.out.println("6) Display full report");
+                            System.out.println("7) Back to main menu");
+                            System.out.print("Choose an option: ");
+
+                            int storedChoice = Integer.parseInt(input.nextLine());
+
+                            if (storedChoice == 1) {
+                                // Display sender and recipient of all stored messages
+                                System.out.println("\n=== Sent Messages ===");
+                                if (Message.sentCount == 0) {
+                                    System.out.println("No sent messages.");
+                                } else {
+                                    for (int i = 0; i < Message.sentCount; i++) {
+                                        System.out.println("Recipient: " + Message.sentRecipients[i] +
+                                                           " | Message: " + Message.sentMessages[i]);
+                                    }
+                                }
+
+                                System.out.println("\n=== Stored Messages ===");
+                                if (Message.storedCount == 0) {
+                                    System.out.println("No stored messages.");
+                                } else {
+                                    for (int i = 0; i < Message.storedCount; i++) {
+                                        System.out.println("Recipient: " + Message.storedRecipients[i] +
+                                                           " | Message: " + Message.storedMessages[i]);
+                                    }
+                                }
+
+                            } else if (storedChoice == 2) {
+                                // Display longest message
+                                System.out.println("\nLongest message: " + Message.displayLongestMessage());
+
+                            } else if (storedChoice == 3) {
+                                // Search by message ID
+                                System.out.print("Enter message ID to search: ");
+                                String searchID = input.nextLine();
+                                System.out.println(Message.searchByMessageID(searchID));
+
+                            } else if (storedChoice == 4) {
+                                // Search by recipient
+                                System.out.print("Enter recipient number to search: ");
+                                String searchRecipient = input.nextLine();
+                                System.out.println(Message.searchByRecipient(searchRecipient));
+
+                            } else if (storedChoice == 5) {
+                                // Delete message by hash
+                                System.out.print("Enter message hash to delete: ");
+                                String hash = input.nextLine();
+                                System.out.println(Message.deleteMessage(hash));
+
+                            } else if (storedChoice == 6) {
+                                // Display full report
+                                System.out.println(Message.displayReport());
+
+                            } else if (storedChoice == 7) {
+                                // Go back to main menu
+                                storedRunning = false;
+
+                            } else {
+                                System.out.println("Invalid option. Please choose 1-7.");
+                            }
+                        }
+
                     } else {
                         // Invalid menu option
-                        System.out.println("Invalid option. Please choose 1, 2 or 3.");
+                        System.out.println("Invalid option. Please choose 1, 2, 3 or 4.");
                     }
                 }
             }
