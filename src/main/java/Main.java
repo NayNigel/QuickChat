@@ -11,7 +11,7 @@
 
 
 // Main class - entry point for QuickChat application
-// Updated for Part 3 - Added arrays and report features
+// Updated - Added 4th menu option for stored messages
 
 import java.util.Scanner;
 
