@@ -6,7 +6,7 @@
 
 
 // LoginTest class - unit tests for Login class
-// Commit 6: Add unit tests for Login class
+// Updated - Fixed registration messages to match rubric
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -97,7 +97,7 @@ public class LoginTest {
     @Test
     public void testUsernameCorrectMessage() {
         Login user = new Login("John", "Doe", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
-        assertEquals("User registered successfully.", user.registerUser());
+        assertTrue(user.registerUser().contains("Username successfully captured."));
     }
 
     // -------------------------------------------------------
@@ -115,7 +115,7 @@ public class LoginTest {
     @Test
     public void testPasswordCorrectMessage() {
         Login user = new Login("John", "Doe", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
-        assertEquals("User registered successfully.", user.registerUser());
+        assertTrue(user.registerUser().contains("Password successfully captured."));
     }
 
     // -------------------------------------------------------
@@ -133,7 +133,7 @@ public class LoginTest {
     @Test
     public void testCellCorrectMessage() {
         Login user = new Login("John", "Doe", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
-        assertEquals("User registered successfully.", user.registerUser());
+        assertTrue(user.registerUser().contains("Cell phone number successfully added."));
     }
 
     // -------------------------------------------------------
