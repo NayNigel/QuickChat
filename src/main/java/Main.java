@@ -9,9 +9,9 @@
  */
 
 
-
 // Main class - entry point for QuickChat application
-// Updated - Added 4th menu option for stored messages
+// Updated for Part 2 - Added messaging features
+// Updated for Part 3 - Added arrays and report features
 
 import java.util.Scanner;
 
@@ -77,7 +77,7 @@ public class Main {
         System.out.println(registrationResult);
 
         // --- Login section - only runs if registration was successful ---
-        if (registrationResult.equals("User registered successfully.")) {
+        if (registrationResult.contains("Username successfully captured.")) {
 
             System.out.println();
             System.out.println("=== Please Log In ===");
