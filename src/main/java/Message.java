@@ -8,10 +8,19 @@
  * @author nigel
  */
 
+// Login class - handles registration and login for QuickChat
+// Commit 1: Initial commit - Project setup
+// Commit 2: Add Login class with registration methods
+// Commit 4: Add comments to Login methods
+// Updated - Added getters for all private variables
 
-// Message class - handles all message related features for QuickChat
-// Updated - Added array storage for sent, stored and disregarded messages
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Message {
@@ -22,10 +31,9 @@ public class Message {
     private String recipient;
     private String messageText;
     private String messageHash;
-    private String status; // "sent", "stored", "disregarded"
+    private String status;
 
     // These arrays store all messages
-    // We use a fixed size of 50 which is more than enough
     public static String[] sentMessages = new String[50];
     public static String[] disregardedMessages = new String[50];
     public static String[] storedMessages = new String[50];
@@ -38,6 +46,9 @@ public class Message {
     public static int sentCount = 0;
     public static int disregardedCount = 0;
     public static int storedCount = 0;
+
+    // This is the name of the JSON file we will save messages to
+    private static final String JSON_FILE = "stored_messages.json";
 
     // Constructor - sets up the message with all its details
     public Message(int messageNumber, String recipient, String messageText) {
@@ -143,6 +154,9 @@ public class Message {
             messageIDs[storedCount] = messageID;
             storedCount++;
             status = "stored";
+            // Save to JSON file when message is stored
+            // Reference: Adapted from https://github.com/google/gson
+            storeMessage(this);
             return "Message successfully stored.";
         } else {
             return "Invalid option.";
@@ -168,10 +182,65 @@ public class Message {
     }
 
     // -------------------------------------------------------
-    // METHOD 9: Display longest stored message
+    // METHOD 9: Store message in JSON file
+    // Reference: Adapted from https://github.com/google/gson
+    // -------------------------------------------------------
+    public static void storeMessage(Message msg) {
+        // Gson is the tool we use to convert objects to JSON
+        Gson gson = new Gson();
+
+        // First read existing messages from file
+        ArrayList<MessageData> messages = readMessagesFromFile();
+
+        // Create a simple data object to store
+        MessageData data = new MessageData(
+            msg.messageID,
+            msg.recipient,
+            msg.messageText,
+            msg.messageHash
+        );
+
+        // Add the new message to the list
+        messages.add(data);
+
+        // Write the updated list back to the file
+        try (FileWriter writer = new FileWriter(JSON_FILE)) {
+            gson.toJson(messages, writer);
+            System.out.println("Message successfully stored in JSON file.");
+        } catch (IOException e) {
+            System.out.println("Error saving message to file.");
+        }
+    }
+
+    // -------------------------------------------------------
+    // METHOD 10: Read messages from JSON file
+    // Reference: Adapted from https://github.com/google/gson
+    // -------------------------------------------------------
+    public static ArrayList<MessageData> readMessagesFromFile() {
+        Gson gson = new Gson();
+
+        // Try to read the file
+        try (FileReader reader = new FileReader(JSON_FILE)) {
+            // Convert the JSON back into a list of MessageData objects
+            Type listType = new TypeToken<ArrayList<MessageData>>(){}.getType();
+            ArrayList<MessageData> messages = gson.fromJson(reader, listType);
+
+            // If file is empty return an empty list
+            if (messages == null) {
+                return new ArrayList<>();
+            }
+            return messages;
+
+        } catch (IOException e) {
+            // If file does not exist yet return empty list
+            return new ArrayList<>();
+        }
+    }
+
+    // -------------------------------------------------------
+    // METHOD 11: Display longest stored message
     // -------------------------------------------------------
     public static String displayLongestMessage() {
-        // Start with the first message as the longest
         String longest = "";
 
         // Go through all sent messages
@@ -195,10 +264,9 @@ public class Message {
     }
 
     // -------------------------------------------------------
-    // METHOD 10: Search for a message by ID
+    // METHOD 12: Search for a message by ID
     // -------------------------------------------------------
     public static String searchByMessageID(String searchID) {
-        // Search through sent messages
         for (int i = 0; i < sentCount; i++) {
             if (messageIDs[i] != null && messageIDs[i].equals(searchID)) {
                 return "Recipient: " + sentRecipients[i] + "\nMessage: " + sentMessages[i];
@@ -208,7 +276,7 @@ public class Message {
     }
 
     // -------------------------------------------------------
-    // METHOD 11: Search all messages for a particular recipient
+    // METHOD 13: Search all messages for a particular recipient
     // -------------------------------------------------------
     public static String searchByRecipient(String searchRecipient) {
         String result = "";
@@ -234,14 +302,13 @@ public class Message {
     }
 
     // -------------------------------------------------------
-    // METHOD 12: Delete a message using message hash
+    // METHOD 14: Delete a message using message hash
     // -------------------------------------------------------
     public static String deleteMessage(String hash) {
         // Search sent messages
         for (int i = 0; i < sentCount; i++) {
             if (messageHashes[i] != null && messageHashes[i].equals(hash.toUpperCase())) {
                 String deletedMessage = sentMessages[i];
-                // Remove by shifting remaining elements left
                 for (int j = i; j < sentCount - 1; j++) {
                     sentMessages[j] = sentMessages[j + 1];
                     sentRecipients[j] = sentRecipients[j + 1];
@@ -257,7 +324,6 @@ public class Message {
         for (int i = 0; i < storedCount; i++) {
             if (messageHashes[i] != null && messageHashes[i].equals(hash.toUpperCase())) {
                 String deletedMessage = storedMessages[i];
-                // Remove by shifting remaining elements left
                 for (int j = i; j < storedCount - 1; j++) {
                     storedMessages[j] = storedMessages[j + 1];
                     storedRecipients[j] = storedRecipients[j + 1];
@@ -272,7 +338,7 @@ public class Message {
     }
 
     // -------------------------------------------------------
-    // METHOD 13: Display full report of all sent messages
+    // METHOD 15: Display full report of all sent messages
     // -------------------------------------------------------
     public static String displayReport() {
         if (sentCount == 0) {
@@ -295,4 +361,23 @@ public class Message {
     public String getRecipient() { return recipient; }
     public String getMessageText() { return messageText; }
     public int getMessageNumber() { return messageNumber; }
+
+    // -------------------------------------------------------
+    // Inner class to hold message data for JSON storage
+    // This is a simple container class
+    // -------------------------------------------------------
+    public static class MessageData {
+        String messageID;
+        String recipient;
+        String messageText;
+        String messageHash;
+
+        // Constructor for MessageData
+        public MessageData(String messageID, String recipient, String messageText, String messageHash) {
+            this.messageID = messageID;
+            this.recipient = recipient;
+            this.messageText = messageText;
+            this.messageHash = messageHash;
+        }
+    }
 }
