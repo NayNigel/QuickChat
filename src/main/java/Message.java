@@ -10,7 +10,7 @@
 
 
 // Message class - handles all message related features for QuickChat
-// Updated for Part 3 - Added arrays and report features
+// Updated - Added array storage for sent, stored and disregarded messages
 
 import java.util.Random;
 
