@@ -220,7 +220,7 @@ public class Message {
     // METHOD 10: Read messages from JSON file
     // Reference: Google. 2024. Gson User Guide. [Online].
     // Available: https://github.com/google/gson
-    // [Accessed 13 April 2026]
+    // [Accessed 11 April 2026]
     // -------------------------------------------------------
     public static ArrayList<MessageData> readMessagesFromFile() {
         Gson gson = new Gson();
