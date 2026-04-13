@@ -6,7 +6,7 @@
 
 
 // MessageTest class - unit tests for Message and Login classes
-// Updated for Part 3 - Added array and report tests
+// Updated - Added Part 3 array and report unit tests
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
