@@ -10,11 +10,11 @@
  // this just says which project this file belongs to
 
 
-// Updated - Added getters for all private variables
 // Login class - handles registration and login for QuickChat
 // Commit 1: Initial commit - Project setup
 // Commit 2: Add Login class with registration methods
 // Commit 4: Add comments to Login methods
+// Updated - Added getters for all private variables
 
 import java.util.Scanner;
 
@@ -83,9 +83,11 @@ public class Login {
 
     // -------------------------------------------------------
     // METHOD 3: Check if the cell phone number is valid
-    // Validates cell phone format
+    // Validates cell phone format using regular expressions
     // Rules: starts with + followed by 10 or 11 digits
-    // Reference: Adapted from https://www.w3schools.com/java/java_regex.asp
+    // Reference: W3Schools. 2024. Java Regular Expressions. [Online].
+    // Available: https://www.w3schools.com/java/java_regex.asp
+    // [Accessed 10 April 2026]
     // -------------------------------------------------------
     public boolean checkCellPhoneNumber() {
         if (cellPhone.matches("\\+\\d{10,11}")) {

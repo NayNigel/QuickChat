@@ -8,11 +8,9 @@
  * @author nigel
  */
 
-// Login class - handles registration and login for QuickChat
-// Commit 1: Initial commit - Project setup
-// Commit 2: Add Login class with registration methods
-// Commit 4: Add comments to Login methods
-// Updated - Added getters for all private variables
+// Message class - handles all message related features for QuickChat
+// Updated - Added array storage for sent, stored and disregarded messages
+// Updated - Added JSON storage for stored messages
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -70,6 +68,7 @@ public class Message {
 
     // -------------------------------------------------------
     // METHOD 2: Check if the message ID is valid
+    // Rules: must not be more than 10 characters
     // -------------------------------------------------------
     public boolean checkMessageID() {
         if (messageID.length() <= 10) {
@@ -81,7 +80,11 @@ public class Message {
 
     // -------------------------------------------------------
     // METHOD 3: Check if the recipient cell number is valid
-    // Reference: Adapted from https://www.w3schools.com/java/java_regex.asp
+    // Validates cell phone format using regular expressions
+    // Rules: starts with + followed by 10 or 11 digits
+    // Reference: W3Schools. 2024. Java Regular Expressions. [Online].
+    // Available: https://www.w3schools.com/java/java_regex.asp
+    // [Accessed 10 April 2026]
     // -------------------------------------------------------
     public String checkRecipientCell() {
         if (recipient.matches("\\+\\d{10,11}")) {
@@ -94,6 +97,7 @@ public class Message {
     // -------------------------------------------------------
     // METHOD 4: Create the message hash
     // Format: first 2 digits of ID : message number : first word + last word
+    // Example: 00:0:HITHANKS
     // -------------------------------------------------------
     public String createMessageHash() {
         // Get first 2 characters of the message ID
@@ -155,7 +159,6 @@ public class Message {
             storedCount++;
             status = "stored";
             // Save to JSON file when message is stored
-            // Reference: Adapted from https://github.com/google/gson
             storeMessage(this);
             return "Message successfully stored.";
         } else {
@@ -183,10 +186,11 @@ public class Message {
 
     // -------------------------------------------------------
     // METHOD 9: Store message in JSON file
-    // Reference: Adapted from https://github.com/google/gson
+    // Reference: Google. 2024. Gson User Guide. [Online].
+    // Available: https://github.com/google/gson
+    // [Accessed 10 April 2026]
     // -------------------------------------------------------
     public static void storeMessage(Message msg) {
-        // Gson is the tool we use to convert objects to JSON
         Gson gson = new Gson();
 
         // First read existing messages from file
@@ -214,25 +218,23 @@ public class Message {
 
     // -------------------------------------------------------
     // METHOD 10: Read messages from JSON file
-    // Reference: Adapted from https://github.com/google/gson
+    // Reference: Google. 2024. Gson User Guide. [Online].
+    // Available: https://github.com/google/gson
+    // [Accessed 13 April 2026]
     // -------------------------------------------------------
     public static ArrayList<MessageData> readMessagesFromFile() {
         Gson gson = new Gson();
 
-        // Try to read the file
         try (FileReader reader = new FileReader(JSON_FILE)) {
-            // Convert the JSON back into a list of MessageData objects
             Type listType = new TypeToken<ArrayList<MessageData>>(){}.getType();
             ArrayList<MessageData> messages = gson.fromJson(reader, listType);
 
-            // If file is empty return an empty list
             if (messages == null) {
                 return new ArrayList<>();
             }
             return messages;
 
         } catch (IOException e) {
-            // If file does not exist yet return empty list
             return new ArrayList<>();
         }
     }
@@ -243,14 +245,12 @@ public class Message {
     public static String displayLongestMessage() {
         String longest = "";
 
-        // Go through all sent messages
         for (int i = 0; i < sentCount; i++) {
             if (sentMessages[i] != null && sentMessages[i].length() > longest.length()) {
                 longest = sentMessages[i];
             }
         }
 
-        // Go through all stored messages
         for (int i = 0; i < storedCount; i++) {
             if (storedMessages[i] != null && storedMessages[i].length() > longest.length()) {
                 longest = storedMessages[i];
@@ -281,14 +281,12 @@ public class Message {
     public static String searchByRecipient(String searchRecipient) {
         String result = "";
 
-        // Search sent messages
         for (int i = 0; i < sentCount; i++) {
             if (sentRecipients[i] != null && sentRecipients[i].equals(searchRecipient)) {
                 result += sentMessages[i] + "\n";
             }
         }
 
-        // Search stored messages
         for (int i = 0; i < storedCount; i++) {
             if (storedRecipients[i] != null && storedRecipients[i].equals(searchRecipient)) {
                 result += storedMessages[i] + "\n";
@@ -305,7 +303,6 @@ public class Message {
     // METHOD 14: Delete a message using message hash
     // -------------------------------------------------------
     public static String deleteMessage(String hash) {
-        // Search sent messages
         for (int i = 0; i < sentCount; i++) {
             if (messageHashes[i] != null && messageHashes[i].equals(hash.toUpperCase())) {
                 String deletedMessage = sentMessages[i];
@@ -320,7 +317,6 @@ public class Message {
             }
         }
 
-        // Search stored messages
         for (int i = 0; i < storedCount; i++) {
             if (messageHashes[i] != null && messageHashes[i].equals(hash.toUpperCase())) {
                 String deletedMessage = storedMessages[i];
@@ -364,7 +360,9 @@ public class Message {
 
     // -------------------------------------------------------
     // Inner class to hold message data for JSON storage
-    // This is a simple container class
+    // Reference: Google. 2024. Gson User Guide. [Online].
+    // Available: https://github.com/google/gson
+    // [Accessed 10 April 2026]
     // -------------------------------------------------------
     public static class MessageData {
         String messageID;
@@ -372,7 +370,6 @@ public class Message {
         String messageText;
         String messageHash;
 
-        // Constructor for MessageData
         public MessageData(String messageID, String recipient, String messageText, String messageHash) {
             this.messageID = messageID;
             this.recipient = recipient;
